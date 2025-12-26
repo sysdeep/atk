@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/visualfc/atk/tk/interp"
+	"github.com/sysdeep/atk/tk/interp"
 )
 
 type Image struct {

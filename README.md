@@ -1,43 +1,46 @@
-# atk
+# Sysdeep atk
+
 Another Golang Tcl/Tk binding GUI ToolKit
 
-	go get github.com/visualfc/atk
+    go get github.com/sysdeep/atk
 
 Go docs: https://pkg.go.dev/github.com/visualfc/atk/tk
+
+Original repo - https://github.com/visualfc/atk
 
 ### Install Tcl/Tk
 
 http://www.tcl-lang.org
 
+- MacOS X
 
-* MacOS X
+  https://www.activestate.com/activetcl/downloads
 
-	https://www.activestate.com/activetcl/downloads
+- Windows
 
-* Windows
+  https://www.activestate.com/activetcl/downloads
 
-	https://www.activestate.com/activetcl/downloads
-	
-	https://github.com/visualfc/tcltk_mingw
+  https://github.com/visualfc/tcltk_mingw
 
-* Ubuntu
+- Ubuntu
 
-	$ sudo apt install tk-dev
+  $ sudo apt install tk-dev
 
-* CentOS
+- CentOS
 
-	$ sudo yum install tk-devel
+  $ sudo yum install tk-devel
 
 ### Demo
 
-https://github.com/visualfc/atk_demo
+see examples
 
 ### Sample
+
 ```go
 package main
 
 import (
-	"github.com/visualfc/atk/tk"
+	"github.com/sysdeep/atk/tk"
 )
 
 type Window struct {

@@ -1,3 +1,3 @@
-module github.com/visualfc/atk
+module github.com/sysdeep/atk
 
 go 1.14

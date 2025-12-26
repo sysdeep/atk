@@ -7,7 +7,7 @@ import (
 	"log"
 	"runtime"
 
-	"github.com/visualfc/atk/tk/interp"
+	"github.com/sysdeep/atk/tk/interp"
 )
 
 var (
