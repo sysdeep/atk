@@ -1,4 +1,4 @@
-// Copyright 2018 visualfc. All rights reserved.
+// https://www.tcl-lang.org/man/tcl8.6/TkCmd/label.htm
 
 package tk
 
@@ -10,16 +10,22 @@ type Label struct {
 }
 
 func NewLabel(parent Widget, text string, attributes ...*WidgetAttr) *Label {
+
+	// вычисление какой вариант использовать tk or ttk
 	theme := checkInitUseTheme(attributes)
-	iid := makeNamedWidgetId(parent, "atk_label")
+
+	iid := makeNamedWidgetId(parent, "tk_label")
 	attributes = append(attributes, &WidgetAttr{"text", text})
 	info := CreateWidgetInfo(iid, WidgetTypeLabel, theme, attributes)
 	if info == nil {
 		return nil
 	}
-	w := &Label{}
-	w.id = iid
-	w.info = info
+	w := &Label{
+		BaseWidget{
+			id:   iid,
+			info: info,
+		},
+	}
 	RegisterWidget(w)
 	return w
 }
@@ -198,6 +204,8 @@ func (w *Label) IsTakeFocus() bool {
 	r, _ := evalAsBool(fmt.Sprintf("%v cget -takefocus", w.id))
 	return r
 }
+
+// label attrs ----------------------------------------------------------------
 
 func LabelAttrBackground(color string) *WidgetAttr {
 	return &WidgetAttr{"background", color}

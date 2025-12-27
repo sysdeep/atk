@@ -12,6 +12,13 @@ type WidgetAttr struct {
 	Value interface{}
 }
 
+func NewWidgetAttr(key string, value interface{}) *WidgetAttr {
+	return &WidgetAttr{
+		Key:   key,
+		Value: value,
+	}
+}
+
 // setup widget init enable/disable theme
 func WidgetAttrInitUseTheme(use bool) *WidgetAttr {
 	return &WidgetAttr{"init_use_theme", use}

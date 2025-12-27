@@ -114,6 +114,7 @@ func buildWidgetAttributeScript(meta *MetaClass, ttk bool, attributes []*WidgetA
 	return strings.Join(list, " ")
 }
 
+// CreateWidgetInfo - создание виджета(tk or ttk) и вызов tcl
 func CreateWidgetInfo(iid string, typ WidgetType, theme bool, attributes []*WidgetAttr) *WidgetInfo {
 	typName, meta, isttk := typ.MetaClass(theme)
 	script := fmt.Sprintf("%v %v", meta.Command, iid)

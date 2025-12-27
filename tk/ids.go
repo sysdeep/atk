@@ -82,6 +82,11 @@ func makeNamedWidgetId(parent Widget, typ string) string {
 	return makeNamedId(parent.Id() + "." + typ)
 }
 
+// NOTE: for sharing
+func MakeNamedWidgetId(parent Widget, typ string) string {
+	return makeNamedWidgetId(parent, typ)
+}
+
 func makeActionId() string {
 	return makeNamedId("atk_action")
 }

@@ -14,6 +14,13 @@ type BaseWidget struct {
 	info *WidgetInfo
 }
 
+func NewBaseWidget(id string, info *WidgetInfo) BaseWidget {
+	return BaseWidget{
+		id:   id,
+		info: info,
+	}
+}
+
 func (w *BaseWidget) String() string {
 	iw := globalWidgetMap[w.id]
 	if iw != nil {
