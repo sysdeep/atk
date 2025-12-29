@@ -68,3 +68,29 @@ func main() {
 	})
 }
 ```
+
+## TODO
+
+- [ ] label
+  - [ ] Image
+  - [ ] Compound
+  - [ ] TakeFocus
+  - [ ] textvariable
+  - [ ] bitmap
+  - [ ] cursor
+  - [ ] disabledforeground
+  - [ ] -highlightbackground, highlightBackground, HighlightBackground
+  - [ ] -highlightcolor, highlightColor, HighlightColor
+  - [ ] -highlightthickness, highlightThickness, HighlightThickness
+  - [ ] -image, image, Image
+
+## Devel
+
+### Fonts
+
+```wish
+font configure TkDefaultFont -size 18
+font names
+font families
+font configure TkDefaultFont -family {Noto Looped Thai}
+```

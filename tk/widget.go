@@ -10,9 +10,16 @@ import (
 
 type Widget interface {
 	Id() string
-	Info() *WidgetInfo
-	Type() WidgetType
-	TypeName() string
+
+	// NOTE: not used
+	// Info() *WidgetInfo
+
+	// NOTE: not used
+	// Type() WidgetType
+
+	// NOTE: not used
+	// TypeName() string
+
 	Parent() Widget
 	Children() []Widget
 	IsValid() bool

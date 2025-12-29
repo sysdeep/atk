@@ -137,6 +137,41 @@ func CreateWidgetInfo(iid string, typ WidgetType, theme bool, attributes []*Widg
 	return &WidgetInfo{typ, typName, isttk, meta}
 }
 
+// CreateWidgetInfoOptions - упрощённая версия
+func CreateWidgetInfoOptions(iid string, command string, options []OptionAdapter) WidgetInfo {
+
+	// typName, meta, isttk := typ.MetaClass(theme)
+	script := fmt.Sprintf("%v %v", command, iid)
+
+	// if theme {
+	// 	cfg := typ.ThemeConfigure()
+	// 	if cfg != "" {
+	// 		script += " " + cfg
+	// 	}
+	// }
+
+	var list []string
+	for _, opt := range options {
+		optionAsString := opt.asStringPair()
+		list = append(list, fmt.Sprintf("-%v {%v}", optionAsString.Key, optionAsString.Value))
+	}
+	opts := strings.Join(list, " ")
+	// if len(options) > 0 {
+	// 	extra := buildWidgetAttributeScript(meta, isttk, attributes)
+	// 	if len(extra) > 0 {
+	// 		script += " " + extra
+	// 	}
+	// }
+
+	script += " " + opts
+	err := eval(script)
+	// TODO
+	if err != nil {
+		panic(err)
+	}
+	return WidgetInfo{}
+}
+
 func findClassById(id string) string {
 	if id == "." {
 		return "Toplevel"

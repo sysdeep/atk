@@ -24,16 +24,16 @@ func NewWindow() *Window {
 	tk.Pack(labelsFrame, tk.PackAttrSide(tk.SideTop), tk.PackAttrExpand(true), tk.PackAttrFillBoth())
 
 	// make labels
-	var labels = []*tk.Label{
+	var labels = []*tk.TLabel{
 		makeLabel1(labelsFrame),
-		makeLabel2(labelsFrame),
-		makeLabel3(labelsFrame),
-		makeLabelNN(labelsFrame),
-		makeLabelText(labelsFrame),
-		makeLabelWrapped(labelsFrame),
-		makeLabelFont(labelsFrame),
-		makeLabelBorderWidth(labelsFrame),
-		makeLabelUnderline(labelsFrame),
+		// makeLabel2(labelsFrame),
+		// makeLabel3(labelsFrame),
+		// makeLabelNN(labelsFrame),
+		// makeLabelText(labelsFrame),
+		// makeLabelWrapped(labelsFrame),
+		// makeLabelFont(labelsFrame),
+		// makeLabelBorderWidth(labelsFrame),
+		// makeLabelUnderline(labelsFrame),
 	}
 
 	// grid labels
@@ -73,8 +73,8 @@ func main() {
 	})
 }
 
-func makeLabel1(parent tk.Widget) *tk.Label {
-	return tk.NewLabel(parent, "Simple label")
+func makeLabel1(parent tk.Widget) *tk.TLabel {
+	return tk.NewTLabel(parent, "Simple ttk label")
 }
 
 func makeLabelUnderline(parent tk.Widget) *tk.Label {
@@ -84,7 +84,8 @@ func makeLabelUnderline(parent tk.Widget) *tk.Label {
 }
 
 func makeLabel2(parent tk.Widget) *tk.Label {
-	lbl := tk.NewLabel(parent, "BG and FG",
+	lbl := tk.NewLabel(parent, "BG and FG")
+	lbl.Configure(
 		tk.LabelOptionBackground("green"),
 		tk.LabelOptionForeground("red"),
 	)

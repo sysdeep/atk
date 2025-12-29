@@ -21,36 +21,40 @@ func NewBaseWidget(id string, info *WidgetInfo) BaseWidget {
 	}
 }
 
-func (w *BaseWidget) String() string {
-	iw := globalWidgetMap[w.id]
-	if iw != nil {
-		return fmt.Sprintf("%v{%v}", iw.TypeName(), w.id)
-	} else {
-		return fmt.Sprintf("Invalid{%v}", w.id)
-	}
-}
+// NOTE: not used
+// func (w *BaseWidget) String() string {
+// 	iw := globalWidgetMap[w.id]
+// 	if iw != nil {
+// 		return fmt.Sprintf("%v{%v}", iw.TypeName(), w.id)
+// 	} else {
+// 		return fmt.Sprintf("Invalid{%v}", w.id)
+// 	}
+// }
 
 func (w *BaseWidget) Id() string {
 	return w.id
 }
 
-func (w *BaseWidget) Info() *WidgetInfo {
-	return w.info
-}
+// NOTE: not used
+// func (w *BaseWidget) Info() *WidgetInfo {
+// 	return w.info
+// }
 
-func (w *BaseWidget) Type() WidgetType {
-	if w.info != nil {
-		return w.info.Type
-	}
-	return WidgetTypeNone
-}
+// NOTE: not used
+// func (w *BaseWidget) Type() WidgetType {
+// 	if w.info != nil {
+// 		return w.info.Type
+// 	}
+// 	return WidgetTypeNone
+// }
 
-func (w *BaseWidget) TypeName() string {
-	if w.info != nil {
-		return w.info.TypeName
-	}
-	return "Invalid"
-}
+// NOTE: not used
+// func (w *BaseWidget) TypeName() string {
+// 	if w.info != nil {
+// 		return w.info.TypeName
+// 	}
+// 	return "Invalid"
+// }
 
 func (w *BaseWidget) Parent() Widget {
 	return ParentOfWidget(w)
@@ -223,6 +227,54 @@ func (w *BaseWidget) FocusPrevWidget() Widget {
 	return FindWidget(id)
 }
 
+// new options api ------------------------------------------------------------
+
+// Configure - задать конфигурацию виджета
+func (w *BaseWidget) Configure(options ...OptionAdapter) error {
+	// see buildWidgetAttributeScript
+	var list []string
+	for _, opt := range options {
+
+		optionAsString := opt.asStringPair()
+
+		list = append(list, fmt.Sprintf("-%v {%v}", optionAsString.Key, optionAsString.Value))
+	}
+	opts := strings.Join(list, " ")
+
+	script := fmt.Sprintf("%v configure %s", w.id, opts)
+
+	return eval(script)
+}
+
+// CGet - получить конфигурацию виджета
+func (w *BaseWidget) CGet(opt OptionAdapter) error {
+
+	err := opt.asAnyPair(func(k string, v interface{}) (interface{}, error) {
+
+		var r interface{}
+		var err error
+
+		switch v.(type) {
+		case string:
+			r, err = evalAsString(fmt.Sprintf("%v cget -%s", w.id, k))
+
+		case int:
+			r, err = evalAsInt(fmt.Sprintf("%v cget -%s", w.id, k))
+
+		default:
+			return nil, fmt.Errorf("unsupported type")
+		}
+
+		if err != nil {
+			return nil, err
+		}
+		return r, nil
+	})
+
+	return err
+}
+
+// public ---------------------------------------------------------------------
 func SetFocusFollowsMouse() error {
 	return eval("tk_focusFollowsMouse")
 }
