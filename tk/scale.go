@@ -71,12 +71,23 @@ func (w *Scale) To() float64 {
 	return r
 }
 
+// TODO: нет в оригинальном виджете
+// func (w *Scale) SetValue(value float64) error {
+// 	return eval(fmt.Sprintf("%v configure -value {%v}", w.id, value))
+// }
+
 func (w *Scale) SetValue(value float64) error {
-	return eval(fmt.Sprintf("%v configure -value {%v}", w.id, value))
+	return eval(fmt.Sprintf("%v set {%v}", w.id, value))
 }
 
+// TODO: нет в оригинальном виджете
+// func (w *Scale) Value() float64 {
+// 	r, _ := evalAsFloat64(fmt.Sprintf("%v cget -value", w.id))
+// 	return r
+// }
+
 func (w *Scale) Value() float64 {
-	r, _ := evalAsFloat64(fmt.Sprintf("%v cget -value", w.id))
+	r, _ := evalAsFloat64(fmt.Sprintf("%v get", w.id))
 	return r
 }
 
@@ -109,6 +120,7 @@ func (w *Scale) Range() (float64, float64) {
 	return w.From(), w.To()
 }
 
+// attr aliases ---------------------------------------------------------------
 func ScaleAttrOrient(orient Orient) *WidgetAttr {
 	return &WidgetAttr{"orient", orient}
 }
@@ -131,4 +143,12 @@ func ScaleAttrValue(value float64) *WidgetAttr {
 
 func ScaleAttrLength(length int) *WidgetAttr {
 	return &WidgetAttr{"length", length}
+}
+
+func ScaleAttrResolution(value float64) *WidgetAttr {
+	return &WidgetAttr{"resolution", value}
+}
+
+func ScaleAttrShowValue(st bool) *WidgetAttr {
+	return &WidgetAttr{"showvalue", boolToInt(st)}
 }

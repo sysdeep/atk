@@ -285,3 +285,40 @@ Specifies the integer index of a character to underline in the widget. This opti
 func OptionUnderline(value int) *intOption {
 	return newIntOption("underline", value)
 }
+
+/*
+Command-Line Name: -compound
+Database Name: compound
+Database Class: Compound
+Specifies if the widget should display text and bitmaps/images at the same time, and if so,
+where the bitmap/image should be placed relative to the text.
+Must be one of the values none, bottom, top, left, right, or center.
+For example, the (default) value none specifies that the bitmap or image should (if defined)
+be displayed instead of the text, the value left specifies that the bitmap or
+image should be displayed to the left of the text, and the value center specifies that the bitmap or image should be displayed on top of the text.
+*/
+func OptionCompound(value string) *stringOption {
+	// TODO: variants
+	return newStringOption("compound", value)
+}
+
+/*
+Command-Line Name: -image
+Database Name: image
+Database Class: Image
+Specifies an image to display in the widget, which must have been created with the image create command. Typically, if the -image option is specified then it overrides other options that specify a bitmap or textual value to display in the widget, though this is controlled by the -compound option; the -image option may be reset to an empty string to re-enable a bitmap or text display.
+*/
+func OptionImage(image *Image) *stringOption {
+	return newStringOption("image", image.Id())
+}
+
+/*
+Command-Line Name: -takefocus
+Database Name: takeFocus
+Database Class: TakeFocus
+Determines whether the window accepts the focus during keyboard traversal (e.g., Tab and Shift-Tab). Before setting the focus to a window, the traversal scripts consult the value of the -takefocus option. A value of 0 means that the window should be skipped entirely during keyboard traversal. 1 means that the window should receive the input focus as long as it is viewable (it and all of its ancestors are mapped). An empty value for the option means that the traversal scripts make the decision about whether or not to focus on the window: the current algorithm is to skip the window if it is disabled, if it has no key bindings, or if it is not viewable. If the value has any other form, then the traversal scripts take the value, append the name of the window to it (with a separator space), and evaluate the resulting string as a Tcl script. The script must return 0, 1, or an empty string: a 0 or 1 value specifies whether the window will receive the input focus, and an empty string results in the default decision described above. Note: this interpretation of the option is defined entirely by the Tcl scripts that implement traversal: the widget implementations ignore the option entirely, so you can change its meaning if you redefine the keyboard traversal scripts.
+*/
+func OptionTakeFocus(value bool) *intOption {
+	intValue := boolToInt(value)
+	return newIntOption("takefocus", intValue)
+}

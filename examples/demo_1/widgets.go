@@ -2,150 +2,66 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"io/fs"
+	"time"
 
 	"github.com/sysdeep/atk/tk"
 )
 
-/*
-
-#--- text
-text .n.widgetPane.lf.text -width 0 -height 6
-.n.widgetPane.lf.text insert 1.0 "import std.stdio;\n\nvoid main(string[] args)\n{\n\twriteln(\"Hello World!\");\n}"
-pack .n.widgetPane.lf.text -side bottom -fill both -anchor nw -padx 5
-
-#--- entry
-entry .n.widgetPane.lf.entry -textvariable myclock
-pack .n.widgetPane.lf.entry -side left -fill x -anchor nw -padx 5 -expand true
-
-#--- entry time ticker
-proc clock:set var {
-    global $var
-    set $var [clock format [clock seconds] -format %H:%M:%S]
-    after 1000 [list clock:set $var]
-}
-
-clock:set myclock          ;# call once, keeps ticking ;-) RS
-
-
-
-
-
-
-
-#--- spinbox
-ttk::spinbox .n.widgetPane.lf.spinbox -width 5 -wrap true -values "foo bar baz qux"
-.n.widgetPane.lf.spinbox set foo
-pack .n.widgetPane.lf.spinbox -side left -padx 5
-			# auto entry3 = new SpinBox(entryLabelFrame)
-			# 	.setData(["$foo", "[bar]", "\"baz\"", "{qux}"])
-			# 	.setWrap(true)
-			# 	.setWidth(5)
-			# 	.pack(5, 0, GeometrySide.left);
-
-
-#--- combobox
-pack [ttk::combobox .n.widgetPane.lf.combobox -values "Option_1 Option_2 Option_3"] -side left -fill x -anchor nw -padx 5
-.n.widgetPane.lf.combobox current 0
-
-*/
-
-func newWidgets(parent tk.Widget) *tk.Frame {
+func makeWidgets(parent tk.Widget, assets fs.FS) *tk.Frame {
 	f := tk.NewFrame(parent)
-	f.SetReliefStyle(tk.ReliefStyleGroove)
 
-	//--- text
-
-	// 	 .n.widgetPane.lf.text -width 0 -height 6
-	// .n.widgetPane.lf.text insert 1.0 "import std.stdio;\n\nvoid main(string[] args)\n{\n\twriteln(\"Hello World!\");\n}"
-	// pack .n.widgetPane.lf.text -side bottom -fill both -anchor nw -padx 5
-
-	// 	#--- entry
-	// entry .n.widgetPane.lf.entry -textvariable myclock
-	// pack .n.widgetPane.lf.entry -side left -fill x -anchor nw -padx 5 -expand true
-
-	// #--- entry time ticker
-	// proc clock:set var {
-	//     global $var
-	//     set $var [clock format [clock seconds] -format %H:%M:%S]
-	//     after 1000 [list clock:set $var]
-	// }
-
-	// clock:set myclock          ;# call once, keeps ticking ;-) RS
-
-	// #--- spinbox
-	// ttk::spinbox .n.widgetPane.lf.spinbox -width 5 -wrap true -values "foo bar baz qux"
-	// .n.widgetPane.lf.spinbox set foo
-	// pack .n.widgetPane.lf.spinbox -side left -padx 5
-	// 			# auto entry3 = new SpinBox(entryLabelFrame)
-	// 			# 	.setData(["$foo", "[bar]", "\"baz\"", "{qux}"])
-	// 			# 	.setWrap(true)
-	// 			# 	.setWidth(5)
-	// 			# 	.pack(5, 0, GeometrySide.left);
-
-	// tk.NewComboBox(lf, tk.WidgetAttrInitUseTheme(true))
-	// #--- combobox
-	// pack [ttk::combobox .n.widgetPane.lf.combobox -values "Option_1 Option_2 Option_3"] -side left -fill x -anchor nw -padx 5
-	// .n.widgetPane.lf.combobox current 0
-
-	// buttons frame
-	buttons_frame := tk.NewFrame(f)
-	buttons_layout := tk.NewHPackLayout(buttons_frame)
-	buttons_layout.AddWidget(make_buttons_frame(buttons_frame),
-		tk.PackAttrPadx(10),
-		tk.PackAttrPady(10),
-		tk.PackAttrSideLeft(),
-		tk.PackAttrFillBoth(),
-		tk.PackAttrExpand(true),
-		tk.PackAttrAnchor(tk.AnchorCenter),
-	)
-	buttons_layout.AddWidget(make_check_buttons_frame(buttons_frame),
-		tk.PackAttrPadx(10),
-		tk.PackAttrPady(10),
-		tk.PackAttrSideLeft(),
-		tk.PackAttrFillBoth(),
-		tk.PackAttrExpand(true),
-		tk.PackAttrAnchor(tk.AnchorCenter),
-	)
-	buttons_layout.AddWidget(make_radio_buttons_frame(buttons_frame),
-		tk.PackAttrPadx(10),
-		tk.PackAttrPady(10),
-		tk.PackAttrSideLeft(),
-		tk.PackAttrFillBoth(),
-		tk.PackAttrExpand(true),
-		tk.PackAttrAnchor(tk.AnchorCenter),
-	)
-
-	layout := tk.NewVPackLayout(f)
-	layout.AddWidget(make_text_entry(f),
+	// text entries
+	tk.Pack(makeTextEntries(f),
 		tk.PackAttrFillX(),
 		tk.PackAttrPadx(10),
 		tk.PackAttrPady(10),
 	)
 
-	// pack .n.widgetPane.buttonsFrame -padx 10 -pady 10 -side left -fill both -expand true -anchor center
-	layout.AddWidget(buttons_frame,
+	// buttons frame
+	buttons_frame := tk.NewFrame(f)
+
+	tk.Pack(makeButtonsFrame(buttons_frame, assets),
 		tk.PackAttrPadx(10),
 		tk.PackAttrPady(10),
 		tk.PackAttrSideLeft(),
 		tk.PackAttrFillBoth(),
 		tk.PackAttrExpand(true),
+		tk.PackAttrAnchor(tk.AnchorCenter),
+	)
+	tk.Pack(makeCheckButtonsFrame(buttons_frame),
+		tk.PackAttrPadx(10),
+		tk.PackAttrPady(10),
+		tk.PackAttrSideLeft(),
+		tk.PackAttrFillBoth(),
+		tk.PackAttrExpand(true),
+		tk.PackAttrAnchor(tk.AnchorCenter),
+	)
+	tk.Pack(makeRadioButtonsFrame(buttons_frame),
+		tk.PackAttrPadx(10),
+		tk.PackAttrPady(10),
+		tk.PackAttrSideLeft(),
+		tk.PackAttrFillBoth(),
+		tk.PackAttrExpand(true),
+		tk.PackAttrAnchor(tk.AnchorCenter),
+	)
+
+	tk.Pack(buttons_frame,
+		tk.PackAttrSideTop(),
+		tk.PackAttrFillBoth(),
+		tk.PackAttrExpand(true),
 		tk.PlaceAttrAnchor(tk.AnchorCenter),
 	)
-	// lll := tk.NewVPackLayout(f)
 
-	// lll.AddWidgets(text, make_text_entry(f), entry, spin, combo)
-
-	// pack [labelframe .n.widgetPane.lf -text "Text Entry"] -side top -fill both -padx 10 -pady 10
+	makeRangeScaleFrame(f)
 
 	return f
 }
 
-func make_text_entry(parent tk.Widget) *tk.LabelFrame {
+func makeTextEntries(parent tk.Widget) *tk.LabelFrame {
 
 	// main frame
-	main_frame := tk.NewLabelFrame(parent)
-	main_frame.SetLabelText("Text Entry")
+	main_frame := tk.NewLabelFrame(parent, tk.LabelFrameAttrLabelText("Text Entry"))
 
 	// row 1
 	row1 := tk.NewFrame(main_frame)
@@ -156,7 +72,6 @@ func make_text_entry(parent tk.Widget) *tk.LabelFrame {
 	// spinner
 	spin := tk.NewSpinBox(row1)
 	spinValues := []string{"foo", "bar", "baz", "qux"}
-	log.Println(spinValues)
 	spin.SetTextValues(spinValues)
 	spin.Entry().SetWidth(5)
 
@@ -164,18 +79,18 @@ func make_text_entry(parent tk.Widget) *tk.LabelFrame {
 	combo := tk.NewComboBox(row1, tk.WidgetAttrInitUseTheme(true))
 	comboValues := []string{"option 1", "option 2", "option 3", "option 4"}
 	combo.SetValues(comboValues)
+	combo.SetCurrentIndex(0)
 
 	// row 1 layout
-	pl := tk.NewHPackLayout(row1)
-	pl.AddWidget(entry,
+	tk.Pack(entry,
 		tk.PackAttrSide(tk.SideLeft),
 		tk.PackAttrFillX(),
 		tk.PackAttrAnchor(tk.AnchorNorthWest),
 		tk.PackAttrExpand(true))
-	pl.AddWidget(spin,
+	tk.Pack(spin,
 		tk.PackAttrSide(tk.SideLeft),
 		tk.PackAttrPadx(5))
-	pl.AddWidget(combo,
+	tk.Pack(combo,
 		tk.PackAttrSide(tk.SideLeft),
 		tk.PackAttrFillX(),
 		tk.PackAttrAnchor(tk.AnchorNorthWest),
@@ -186,104 +101,150 @@ func make_text_entry(parent tk.Widget) *tk.LabelFrame {
 	text.InsertText(0, "import std.stdio;\n\nvoid main(string[] args)\n{\n\twriteln(\"Hello World!\");\n}")
 
 	// main layout
-	ml_pack := tk.NewVPackLayout(main_frame)
-	ml_pack.AddWidget(row1,
+	tk.Pack(row1,
 		tk.PackAttrExpand(true),
 		tk.PackAttrFillX(),
 		tk.PackAttrPady(2),
 		tk.PackAttrPadx(2),
 	)
-	ml_pack.AddWidget(text,
+	tk.Pack(text,
 		tk.PackAttrFillX(),
 		tk.PackAttrPady(2),
 		tk.PackAttrPadx(2),
 	)
 
+	// run time update
+	go func() {
+		for {
+			tk.Async(func() {
+				entry.SetText(time.Now().Format(time.TimeOnly))
+			})
+			<-time.Tick(1 * time.Second)
+		}
+	}()
 	return main_frame
 }
 
-func make_buttons_frame(parent tk.Widget) *tk.LabelFrame {
+func makeButtonsFrame(parent tk.Widget, assets fs.FS) *tk.LabelFrame {
 
 	// main frame
-	main_frame := tk.NewLabelFrame(parent)
-	main_frame.SetLabelText("Buttons")
+	main_frame := tk.NewLabelFrame(parent, tk.LabelFrameAttrLabelText("Buttons"))
 
-	// text button
+	// text button ----------------------------------------
 	text_button := tk.NewButton(main_frame, "Text button")
 
-	// image button
-	image, _ := tk.LoadImage("./assets/thumbnail.png")
+	// image button ---------------------------------------
+	image, _ := tk.LoadImageFrom("assets/thumbnail.png", assets)
 	image_button := tk.NewButton(main_frame, "Image button", tk.ButtonAttrCompound(tk.CompoundLeft))
 	image_button.SetImage(image)
 
-	// menu button
-	menu := tk.NewMenu(main_frame, tk.MenuAttrTearoff(false))
-	for i := 1; i < 4; i++ {
-		// NOTE: for go < 1.22 - need local variable for capture in closure
-		local_i := i
-		menu.AddAction(tk.NewActionEx(fmt.Sprintf("Option %d", i), func() {
-			fmt.Println(fmt.Sprintf("Option %d was selected", local_i))
-		}))
-	}
+	// menu button ----------------------------------------
 	menu_button := tk.NewMenuButton(main_frame, "Menu button")
+	// NOTE: parent of menu must be button
+	menu := tk.NewMenu(menu_button, tk.MenuAttrTearoff(false))
 	menu_button.SetMenu(menu)
 
-	main_layout := tk.NewVPackLayout(main_frame)
-	main_layout.AddWidget(text_button, tk.PackAttrPadx(5), tk.PackAttrPady(5))
-	main_layout.AddWidget(image_button, tk.PackAttrPadx(5), tk.PackAttrPady(5))
-	main_layout.AddWidget(menu_button, tk.PackAttrPadx(5), tk.PackAttrPady(5))
+	for i := 1; i < 4; i++ {
+		// 	// NOTE: for go < 1.22 - need local variable for capture in closure
+		local_i := i
+		menu.AddAction(tk.NewActionEx(fmt.Sprintf("Option %d", local_i), func() {
+			fmt.Printf("Option %d was selected\n", local_i)
+		}))
+	}
+
+	tk.Pack(text_button, tk.PackAttrPadx(5), tk.PackAttrPady(5))
+	tk.Pack(image_button, tk.PackAttrPadx(5), tk.PackAttrPady(5))
+	tk.Pack(menu_button, tk.PackAttrPadx(5), tk.PackAttrPady(5))
 
 	return main_frame
 }
 
-func make_check_buttons_frame(parent tk.Widget) *tk.LabelFrame {
+func makeCheckButtonsFrame(parent tk.Widget) *tk.LabelFrame {
 
 	// main frame
-	main_frame := tk.NewLabelFrame(parent)
-	main_frame.SetLabelText("Check buttons")
-
-	main_layout := tk.NewVPackLayout(main_frame)
+	main_frame := tk.NewLabelFrame(parent, tk.LabelFrameAttrLabelText("Check buttons"))
 
 	// buttons
 	var btn *tk.CheckButton
-	is_selected := false
+	is_selected := true
 	for i := 1; i < 4; i++ {
 		local_i := i
 		btn = tk.NewCheckButton(main_frame, fmt.Sprintf("Option %d", local_i))
-		main_layout.AddWidget(btn, tk.PackAttrPadx(5), tk.PackAttrPady(5))
-		if !is_selected {
-			btn.SetChecked(true)
-			is_selected = true
-		}
+		tk.Pack(btn, tk.PackAttrPadx(5), tk.PackAttrPady(5))
+
+		btn.SetChecked(is_selected)
+		is_selected = !is_selected
 	}
 
 	return main_frame
 }
 
-func make_radio_buttons_frame(parent tk.Widget) *tk.LabelFrame {
+func makeRadioButtonsFrame(parent tk.Widget) *tk.LabelFrame {
 
 	// main frame
-	main_frame := tk.NewLabelFrame(parent)
-	main_frame.SetLabelText("Radio buttons")
-
-	main_layout := tk.NewVPackLayout(main_frame)
+	main_frame := tk.NewLabelFrame(parent, tk.LabelFrameAttrLabelText("Radio buttons"))
 
 	// buttons
 	group := tk.NewRadioGroup()
-	is_selected := false
+
 	var btn *tk.RadioButton
 	for i := 1; i < 4; i++ {
 		local_i := i
 		btn = tk.NewRadioButton(main_frame, fmt.Sprintf("Option %d", local_i))
-		main_layout.AddWidget(btn, tk.PackAttrPadx(5), tk.PackAttrPady(5))
-
+		tk.Pack(btn, tk.PackAttrPadx(5), tk.PackAttrPady(5))
 		group.AddRadio(btn, i)
-
-		if !is_selected {
-			btn.SetChecked(true)
-			is_selected = true
-		}
 	}
+
+	group.SetCheckedIndex(0)
+
+	return main_frame
+}
+
+func makeRangeScaleFrame(parent tk.Widget) *tk.LabelFrame {
+	main_frame := tk.NewLabelFrame(parent, tk.LabelFrameAttrLabelText("Progress & Scale"))
+
+	// bar ------------------------------------------------
+	bar := tk.NewProgressBar(main_frame, tk.Orient(tk.Horizontal), tk.ProgressBarAttrValue(4.0), tk.ProgressBarAttrMaximum(10))
+	tk.Pack(
+		bar,
+		tk.PackAttrPadx(5),
+		tk.PackAttrPady(5),
+		tk.PackAttrSideTop(),
+		tk.PackAttrFillX(),
+		tk.PackAttrAnchor(tk.AnchorCenter),
+	)
+
+	// scale ----------------------------------------------
+	scale := tk.NewScale(
+		main_frame,
+		tk.Orient(tk.Horizontal),
+		tk.ScaleAttrFrom(10),
+		tk.ScaleAttrTo(0),
+		tk.ScaleAttrShowValue(false),
+		tk.ScaleAttrResolution(0.01),
+	)
+	tk.Pack(
+		scale,
+		tk.PackAttrPadx(5),
+		tk.PackAttrPady(5),
+		tk.PackAttrSideTop(),
+		tk.PackAttrFillX(),
+		tk.PackAttrAnchor(tk.AnchorCenter),
+	)
+	scale.SetValue(4)
+	scale.OnCommand(func() {
+		bar.SetValue(scale.Value())
+	})
+
+	// pack
+	tk.Pack(
+		main_frame,
+		tk.PackAttrSideBottom(),
+		tk.PackAttrFillBoth(),
+		tk.PackAttrAnchor(tk.AnchorCenter),
+		tk.PackAttrPadx(10),
+		tk.PackAttrPady(10),
+	)
 
 	return main_frame
 }

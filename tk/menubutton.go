@@ -135,7 +135,8 @@ func (w *MenuButton) SetMenu(menu *Menu) error {
 	if menu == nil {
 		return ErrInvalid
 	}
-	return eval(fmt.Sprintf("%v configure -menu {%v}", w.id, menu.Id()))
+	script := fmt.Sprintf("%v configure -menu {%v}", w.id, menu.Id())
+	return eval(script)
 }
 
 func (w *MenuButton) Menu() *Menu {

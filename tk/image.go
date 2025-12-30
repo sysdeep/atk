@@ -8,6 +8,7 @@ import (
 	"image"
 	"image/color"
 	_ "image/png"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -57,6 +58,30 @@ func LoadImage(file string, attributes ...*ImageAttr) (*Image, error) {
 		}
 		fileImage = im
 	}
+	im := NewImage(attributes...)
+	if im == nil {
+		return nil, errors.New("NewImage failed")
+	}
+	if fileImage != nil {
+		im.SetImage(fileImage)
+	}
+	return im, nil
+}
+
+func LoadImageFrom(filePath string, storage fs.FS, attributes ...*ImageAttr) (*Image, error) {
+	var fileImage image.Image
+
+	file, err := storage.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	fileImage, _, err = image.Decode(file)
+	file.Close()
+	if err != nil {
+		return nil, err
+	}
+
 	im := NewImage(attributes...)
 	if im == nil {
 		return nil, errors.New("NewImage failed")

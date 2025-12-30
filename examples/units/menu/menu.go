@@ -57,7 +57,7 @@ func main() {
 		edit.AddAction(italicAct)
 
 		info := tk.NewLabel(mw, "")
-		info.SetText(`Menu Demo
+		text := `Menu Demo
 
 //menu
 mbar := tk.NewMenu(mw)
@@ -74,7 +74,9 @@ tk.NewActionEx
 tk.NewCheckAction
 tk.NewActionGroup //radio action group
 
-`)
+`
+		info.Configure(tk.LabelOptionText(text))
+
 		btn := tk.NewButton(mw, "Quit")
 		btn.OnCommand(func() {
 			tk.Quit()

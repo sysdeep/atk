@@ -72,9 +72,6 @@ func main() {
 ## TODO
 
 - [ ] label
-  - [ ] Image
-  - [ ] Compound
-  - [ ] TakeFocus
   - [ ] textvariable
   - [ ] bitmap
   - [ ] cursor
@@ -82,7 +79,6 @@ func main() {
   - [ ] -highlightbackground, highlightBackground, HighlightBackground
   - [ ] -highlightcolor, highlightColor, HighlightColor
   - [ ] -highlightthickness, highlightThickness, HighlightThickness
-  - [ ] -image, image, Image
 
 ## Devel
 

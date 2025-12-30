@@ -34,6 +34,7 @@ func NewWindow() *Window {
 		makeLabelFont(labelsFrame),
 		makeLabelBorderWidth(labelsFrame),
 		makeLabelUnderline(labelsFrame),
+		makeLabelImage(labelsFrame),
 	}
 
 	// grid labels
@@ -87,6 +88,16 @@ func makeLabel2(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "BG and FG",
 		tk.LabelOptionBackground("green"),
 		tk.LabelOptionForeground("red"),
+	)
+	return lbl
+}
+
+func makeLabelImage(parent tk.Widget) *tk.Label {
+	img, _ := tk.LoadImage(tk.TkLibrary() + "/images/pwrdLogo100.gif")
+
+	lbl := tk.NewLabel(parent, "with image",
+		tk.LabelOptionImage(img),
+		tk.LabelOptionCompound("left"),
 	)
 	return lbl
 }

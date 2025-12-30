@@ -44,6 +44,9 @@ type Widget interface {
 	IsFocus() bool
 	Lower(below Widget) error
 	Raise(above Widget) error
+
+	// geometry
+	Pack(attributes ...*LayoutAttr) error
 }
 
 var (

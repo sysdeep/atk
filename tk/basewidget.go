@@ -274,6 +274,10 @@ func (w *BaseWidget) CGet(opt OptionAdapter) error {
 	return err
 }
 
+func (w *BaseWidget) Pack(attributes ...*LayoutAttr) error {
+	return Pack(w, attributes...)
+}
+
 // public ---------------------------------------------------------------------
 func SetFocusFollowsMouse() error {
 	return eval("tk_focusFollowsMouse")

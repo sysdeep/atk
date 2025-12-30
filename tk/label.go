@@ -38,15 +38,10 @@ var LabelOptionJustify = OptionJustify
 var LabelOptionAnchor = OptionAnchor
 var LabelOptionWrapLength = OptionWrapLength
 var LabelOptionUnderline = OptionUnderline
-
-// TODO: пока не очень...
 var LabelOptionFont = OptionFont
-
-// TODO: options
-// SetFont
-// SetImage
-// SetCompound
-// SetTakeFocus
+var LabelOptionCompound = OptionCompound
+var LabelOptionImage = OptionImage
+var LabelOptionTakeFocus = OptionTakeFocus
 
 // label specific options -----------------------------------------------------
 /*
@@ -80,6 +75,11 @@ In the disabled state the -disabledforeground and -background options determine 
 */
 func LabelOptionState(state string) *stringOption {
 	return newStringOption("state", state)
+}
+
+// fast configure aliases -----------------------------------------------------
+func (l *Label) SetText(value string) {
+	l.Configure(LabelOptionText(value))
 }
 
 // org get-set ----------------------------------------------------------------

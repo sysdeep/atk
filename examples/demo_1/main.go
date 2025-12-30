@@ -1,14 +1,29 @@
 package main
 
 import (
+	"embed"
+
 	"github.com/sysdeep/atk/tk"
 )
+
+//go:embed assets
+var assetsFS embed.FS
 
 type Window struct {
 	*tk.Window
 }
 
 func NewWindow() *Window {
+
+	tk.ExampleBuilder()
+
+	// fmt.Println(assetsFS.ReadDir("assets"))
+
+	tabWidgetsImage, _ := tk.LoadImageFrom("assets/layout_content.png", assetsFS)
+	tabPanelsImage, _ := tk.LoadImageFrom("assets/application_tile_horizontal.png", assetsFS)
+	tabCanvasImage, _ := tk.LoadImageFrom("assets/shape_ungroup.png", assetsFS)
+	tabDialogsImage, _ := tk.LoadImageFrom("assets/application_double.png", assetsFS)
+
 	mw := &Window{tk.RootWindow()}
 
 	menu := makeMenu(mw)
@@ -16,38 +31,38 @@ func NewWindow() *Window {
 
 	tabs := tk.NewNotebook(mw)
 
-	tabWidgets := newWidgets(tabs)
+	tabWidgets := makeWidgets(tabs, assetsFS)
 	tabPanels := newPanels(tabs)
 	qlbl := tk.NewLabel(tabs, "Hello ATK")
 
-	tabs.AddTab(tabWidgets, "Widgets")
-	tabs.AddTab(tabPanels, "Panels")
-	tabs.AddTab(qlbl, "qlbl")
+	tabs.AddTab(tabWidgets, "Widgets", tk.TabAttrImage(tabWidgetsImage), tk.TabAttrCompound(tk.CompoundLeft))
+	tabs.AddTab(tabPanels, "Panels", tk.TabAttrImage(tabPanelsImage), tk.TabAttrCompound(tk.CompoundLeft))
+	tabs.AddTab(qlbl, "Canvas", tk.TabAttrImage(tabCanvasImage), tk.TabAttrCompound(tk.CompoundLeft))
+	tabs.AddTab(tk.NewLabel(tabs, "Dialogs"), "Dialogs", tk.TabAttrImage(tabDialogsImage), tk.TabAttrCompound(tk.CompoundLeft))
 
-	lbl := tk.NewLabel(mw, "Hello ATK")
-	btn := tk.NewButton(mw, "Quit")
+	// layout
+	tk.Pack(tabs,
+		tk.PackAttrFillBoth(),
+		tk.PackAttrPadx(10),
+		tk.PackAttrPady(10),
+		tk.PackAttrExpand(true),
+	)
+
+	// controls
+	ctrlFrame := tk.NewFrame(mw)
+	tk.Pack(ctrlFrame, tk.PackAttrSideBottom(), tk.PackAttrExpand(false), tk.PackAttrPadx(10), tk.PackAttrPady(10))
+
+	btn := tk.NewButton(ctrlFrame, "Exit")
 	btn.OnCommand(func() {
 		tk.Quit()
 	})
+	tk.Pack(btn)
 
-	// layout
-	layout := tk.NewVPackLayout(mw)
-	layout.AddWidget(tabs,
-		tk.PackAttrFillX(),
-		tk.PackAttrPadx(10),
-		tk.PackAttrPady(10))
-	layout.AddWidget(lbl)
-	layout.AddWidget(tk.NewLayoutSpacer(mw, 0, true))
-	layout.AddWidget(btn)
-	//.AddWidgets(tabs, lbl, tk.NewLayoutSpacer(mw, 0, true), btn)
 	mw.ResizeN(800, 600)
+	mw.BindEvent("<Control-q>", func(e *tk.Event) {
+		mw.Destroy()
+	})
 	return mw
-}
-
-func newFrame(parent tk.Widget) *tk.Frame {
-	f := tk.NewFrame(parent)
-
-	return f
 }
 
 func main() {

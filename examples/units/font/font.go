@@ -22,7 +22,7 @@ func NewWindow() *Window {
 
 	font := tk.NewUserFont("", 36)
 	info := tk.NewLabel(mw, "Hello, 中国")
-	info.SetFont(font)
+	info.Configure(tk.LabelOptionFont(font.Id()))
 
 	vpk := tk.NewVPackLayout(mw)
 	w := &Window{mw, font, info, vpk}
@@ -97,7 +97,8 @@ func (w *Window) Init() {
 }
 
 func (w *Window) Resize() {
-	width := w.font.MeasureTextWidth(w.info.Text()) + w.vpk.BorderWidth()*2
+	// width := w.font.MeasureTextWidth(w.info.Text()) + w.vpk.BorderWidth()*2
+	width := 600
 	if width > w.Width() {
 		w.SetWidth(width)
 	} else if width < 400 {
