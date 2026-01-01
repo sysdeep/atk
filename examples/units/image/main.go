@@ -21,11 +21,11 @@ func main() {
 		if err != nil {
 			log.Println(err)
 		} else {
-			lbl := tk.NewLabel(mw, "Image", tk.LabelOptionCompound("center"))
+			lbl := tk.NewLabel(mw, "Image", tk.LabelOptCompound("center"))
 
 			btn := tk.NewButton(mw, "Btn")
 			btn.OnCommand(func() {
-				lbl.Configure(tk.LabelOptionImage(img))
+				lbl.Configure(tk.LabelOptImage(img))
 			})
 			tk.NewVPackLayout(mw).AddWidgets(btn, lbl)
 			mw.SetSizeN(img.Size().Width, img.Size().Height+20)

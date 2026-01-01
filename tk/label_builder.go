@@ -42,88 +42,88 @@ func NewLabelOptions() *LabelBuilder {
 }
 
 func (o *LabelBuilder) PadX(value int) *LabelBuilder {
-	o.options = append(o.options, OptionPadX(value))
+	o.options = append(o.options, OptPadX(value))
 	return o
 }
 
 func (o *LabelBuilder) PadY(value int) *LabelBuilder {
-	o.options = append(o.options, OptionPadY(value))
+	o.options = append(o.options, OptPadY(value))
 	return o
 }
 
 func (o *LabelBuilder) Background(value string) *LabelBuilder {
-	o.options = append(o.options, OptionBackground(value))
+	o.options = append(o.options, OptBackground(value))
 	return o
 }
 
 func (o *LabelBuilder) ActiveBackground(value string) *LabelBuilder {
-	o.options = append(o.options, OptionActiveBackground(value))
+	o.options = append(o.options, OptActiveBackground(value))
 	return o
 }
 
 func (o *LabelBuilder) Foreground(value string) *LabelBuilder {
-	o.options = append(o.options, OptionForeground(value))
+	o.options = append(o.options, OptForeground(value))
 	return o
 }
 
 func (o *LabelBuilder) ActiveForeground(value string) *LabelBuilder {
-	o.options = append(o.options, OptionActiveForeground(value))
+	o.options = append(o.options, OptActiveForeground(value))
 	return o
 }
 
 func (o *LabelBuilder) Relief(value string) *LabelBuilder {
-	o.options = append(o.options, OptionRelief(value))
+	o.options = append(o.options, OptRelief(value))
 	return o
 }
 
 func (o *LabelBuilder) BorderWidth(value int) *LabelBuilder {
-	o.options = append(o.options, OptionBorderWidth(value))
+	o.options = append(o.options, OptBorderWidth(value))
 	return o
 }
 
 func (o *LabelBuilder) Text(value string) *LabelBuilder {
 	o.name = value
-	o.options = append(o.options, OptionText(value))
+	o.options = append(o.options, OptText(value))
 	return o
 }
 
 func (o *LabelBuilder) Justify(value string) *LabelBuilder {
-	o.options = append(o.options, OptionJustify(value))
+	o.options = append(o.options, OptJustify(value))
 	return o
 }
 
 func (o *LabelBuilder) Anchor(value string) *LabelBuilder {
-	o.options = append(o.options, OptionAnchor(value))
+	o.options = append(o.options, OptAnchor(value))
 	return o
 }
 
 func (o *LabelBuilder) WrapLength(value int) *LabelBuilder {
-	o.options = append(o.options, OptionWrapLength(value))
+	o.options = append(o.options, OptWrapLength(value))
 	return o
 }
 
 func (o *LabelBuilder) Underline(value int) *LabelBuilder {
-	o.options = append(o.options, OptionUnderline(value))
+	o.options = append(o.options, OptUnderline(value))
 	return o
 }
 
 func (o *LabelBuilder) Font(value string) *LabelBuilder {
-	o.options = append(o.options, OptionFont(value))
+	o.options = append(o.options, OptFont(value))
 	return o
 }
 
 func (o *LabelBuilder) Compound(value string) *LabelBuilder {
-	o.options = append(o.options, OptionCompound(value))
+	o.options = append(o.options, OptCompound(value))
 	return o
 }
 
 func (o *LabelBuilder) Image(value *Image) *LabelBuilder {
-	o.options = append(o.options, OptionImage(value))
+	o.options = append(o.options, OptImage(value))
 	return o
 }
 
 func (o *LabelBuilder) TakeFocus(value bool) *LabelBuilder {
-	o.options = append(o.options, OptionTakeFocus(value))
+	o.options = append(o.options, OptTakeFocus(value))
 	return o
 }
 

@@ -22,7 +22,7 @@ func NewWindow() *Window {
 
 	font := tk.NewUserFont("", 36)
 	info := tk.NewLabel(mw, "Hello, 中国")
-	info.Configure(tk.LabelOptionFont(font.Id()))
+	info.Configure(tk.LabelOptFont(font.Id()))
 
 	vpk := tk.NewVPackLayout(mw)
 	w := &Window{mw, font, info, vpk}

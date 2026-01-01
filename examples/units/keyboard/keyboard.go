@@ -18,7 +18,7 @@ func NewWindow() *Window {
 	mw.Window = tk.RootWindow()
 	mw.keyLabel = tk.NewLabel(mw, "keyboard")
 	mw.posLabel = tk.NewLabel(mw, "pos")
-	mw.keyLabel.Configure(tk.LabelOptionFont(tk.NewUserFont("", 24).Id()))
+	mw.keyLabel.Configure(tk.LabelOptFont(tk.NewUserFont("", 24).Id()))
 
 	vpk := tk.NewVPackLayout(mw)
 	vpk.AddWidget(mw.keyLabel, tk.PackAttrFillBoth(), tk.PackAttrExpand(true))

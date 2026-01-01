@@ -75,7 +75,7 @@ tk.NewCheckAction
 tk.NewActionGroup //radio action group
 
 `
-		info.Configure(tk.LabelOptionText(text))
+		info.Configure(tk.LabelOptText(text))
 
 		btn := tk.NewButton(mw, "Quit")
 		btn.OnCommand(func() {

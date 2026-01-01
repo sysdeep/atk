@@ -21,7 +21,7 @@ func makeFontsFrame(parent tk.Widget) *tk.LabelFrame {
 
 	for i, txt := range sysFontNameList {
 		lbl := tk.NewLabel(frame, txt)
-		lbl.Configure(tk.LabelOptionFont(txt))
+		lbl.Configure(tk.LabelOptFont(txt))
 		tk.Grid(lbl, tk.GridAttrColumn(0), tk.GridAttrRow(i))
 	}
 

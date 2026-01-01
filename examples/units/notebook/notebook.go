@@ -44,7 +44,7 @@ func NewWindow() *Window {
 	if err != nil {
 		log.Println(err)
 	}
-	pane4.Configure(tk.LabelOptionImage(img))
+	pane4.Configure(tk.LabelOptImage(img))
 
 	mw.tab.AddTab(pane4, "page4")
 

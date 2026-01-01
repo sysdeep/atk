@@ -79,15 +79,15 @@ func makeLabel1(parent tk.Widget) *tk.TLabel {
 
 func makeLabelUnderline(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "Simple label with underline")
-	lbl.Configure(tk.LabelOptionUnderline(2))
+	lbl.Configure(tk.LabelOptUnderline(2))
 	return lbl
 }
 
 func makeLabel2(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "BG and FG")
 	lbl.Configure(
-		tk.LabelOptionBackground("green"),
-		tk.LabelOptionForeground("red"),
+		tk.LabelOptBackground("green"),
+		tk.LabelOptForeground("red"),
 	)
 	return lbl
 }
@@ -95,7 +95,7 @@ func makeLabel2(parent tk.Widget) *tk.Label {
 func makeLabelFont(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "Font")
 	lbl.Configure(
-		tk.LabelOptionFont("TKHeadingFont"),
+		tk.LabelOptFont("TKHeadingFont"),
 		// tk.LabelOptionForeground("red"),
 	)
 	return lbl
@@ -104,9 +104,9 @@ func makeLabelFont(parent tk.Widget) *tk.Label {
 func makeLabel3(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "Width = 30")
 	lbl.Configure(
-		tk.LabelOptionBackground("green"),
-		tk.LabelOptionWidth(30),
-		tk.LabelOptionForeground("red"),
+		tk.LabelOptBackground("green"),
+		tk.LabelOptWidth(30),
+		tk.LabelOptForeground("red"),
 	)
 	return lbl
 }
@@ -114,10 +114,10 @@ func makeLabel3(parent tk.Widget) *tk.Label {
 func makeLabelBorderWidth(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "BorderWidth 3 and padx pady 10")
 	lbl.Configure(
-		tk.LabelOptionBorderWidth(3),
-		tk.LabelOptionRelief("solid"),
-		tk.LabelOptionPadX(10),
-		tk.LabelOptionPadY(10),
+		tk.LabelOptBorderWidth(3),
+		tk.LabelOptRelief("solid"),
+		tk.LabelOptPadX(10),
+		tk.LabelOptPadY(10),
 	)
 	return lbl
 }
@@ -125,7 +125,7 @@ func makeLabelBorderWidth(parent tk.Widget) *tk.Label {
 func makeLabelWrapped(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "Wrap length 200")
 	lbl.Configure(
-		tk.LabelOptionWrapLength(100),
+		tk.LabelOptWrapLength(100),
 	)
 	return lbl
 }
@@ -133,17 +133,17 @@ func makeLabelWrapped(parent tk.Widget) *tk.Label {
 func makeLabelText(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "---")
 	lbl.Configure(
-		tk.LabelOptionText("reconfigure text\ndisabled"),
-		tk.LabelOptionJustify("right"),
-		tk.LabelOptionWidth(30),
-		tk.LabelOptionBorderWidth(1),
-		tk.LabelOptionRelief("solid"),
-		tk.LabelOptionPadX(10),
-		tk.LabelOptionPadY(10),
-		tk.LabelOptionAnchor("e"),
+		tk.LabelOptText("reconfigure text\ndisabled"),
+		tk.LabelOptJustify("right"),
+		tk.LabelOptWidth(30),
+		tk.LabelOptBorderWidth(1),
+		tk.LabelOptRelief("solid"),
+		tk.LabelOptPadX(10),
+		tk.LabelOptPadY(10),
+		tk.LabelOptAnchor("e"),
 		// tk.LabelOptionActiveBackground("green"),
-		tk.LabelOptionState("disabled"),
-		tk.LabelOptionHeight(13),
+		tk.LabelOptState("disabled"),
+		tk.LabelOptHeight(13),
 		// tk.LabelOptionBackground("blue"),
 	)
 	return lbl
@@ -156,21 +156,21 @@ func makeLabelNN(parent tk.Widget) *tk.Label {
 	lbl_1.Configure(
 		// tk.LabelOptionBackground("green"),
 		// tk.LabelOptionForeground("red"),
-		tk.LabelOptionWidth(30),
-		tk.OptionReliefEnum(tk.ReliefStyleRidge),
+		tk.LabelOptWidth(30),
+		tk.OptReliefEnum(tk.ReliefStyleRidge),
 	)
 
 	// test try option throught cget
-	bgq := tk.LabelOptionBackground("")
+	bgq := tk.LabelOptBackground("")
 	fmt.Printf("Bg before: %s\n", bgq.Value)
 	lbl_1.CGet(bgq)
 	fmt.Printf("Bg after: %s\n", bgq.Value)
 
-	www := tk.LabelOptionWidth(0)
+	www := tk.LabelOptWidth(0)
 	lbl_1.CGet(www)
 	fmt.Printf("W after: %d\n", www.Value)
 
-	rw := tk.OptionReliefEnum(0)
+	rw := tk.OptReliefEnum(0)
 	lbl_1.CGet(rw)
 	fmt.Printf("relief: %s\n", rw.Value)
 

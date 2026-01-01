@@ -12,7 +12,7 @@ func NewLabel(parent Widget, text string, options ...OptionAdapter) *Label {
 
 	iid := makeNamedWidgetId(parent, "tk_label")
 
-	options = append(options, LabelOptionText(text))
+	options = append(options, LabelOptText(text))
 
 	info := CreateWidgetInfoOptions(iid, "label", options)
 
@@ -25,23 +25,32 @@ func NewLabel(parent Widget, text string, options ...OptionAdapter) *Label {
 }
 
 // option aliases -------------------------------------------------------------
-var LabelOptionBackground = OptionBackground
-var LabelOptionActiveBackground = OptionActiveBackground
-var LabelOptionForeground = OptionForeground
-var LabelOptionActiveForeground = OptionActiveForeground
-var LabelOptionRelief = OptionRelief
-var LabelOptionBorderWidth = OptionBorderWidth
-var LabelOptionPadX = OptionPadX
-var LabelOptionPadY = OptionPadY
-var LabelOptionText = OptionText
-var LabelOptionJustify = OptionJustify
-var LabelOptionAnchor = OptionAnchor
-var LabelOptionWrapLength = OptionWrapLength
-var LabelOptionUnderline = OptionUnderline
-var LabelOptionFont = OptionFont
-var LabelOptionCompound = OptionCompound
-var LabelOptionImage = OptionImage
-var LabelOptionTakeFocus = OptionTakeFocus
+var LabelOptBackground = OptBackground
+var LabelOptActiveBackground = OptActiveBackground
+var LabelOptForeground = OptForeground
+var LabelOptActiveForeground = OptActiveForeground
+var LabelOptRelief = OptRelief
+var LabelOptBorderWidth = OptBorderWidth
+var LabelOptPadX = OptPadX
+var LabelOptPadY = OptPadY
+var LabelOptText = OptText
+var LabelOptJustify = OptJustify
+var LabelOptAnchor = OptAnchor
+var LabelOptWrapLength = OptWrapLength
+var LabelOptUnderline = OptUnderline
+var LabelOptFont = OptFont
+var LabelOptCompound = OptCompound
+var LabelOptImage = OptImage
+var LabelOptTakeFocus = OptTakeFocus
+var LabelOptCursor = OptCursor
+
+// TODO
+//   - [ ] textvariable
+//   - [ ] bitmap
+//   - [ ] disabledforeground
+//   - [ ] -highlightbackground, highlightBackground, HighlightBackground
+//   - [ ] -highlightcolor, highlightColor, HighlightColor
+//   - [ ] -highlightthickness, highlightThickness, HighlightThickness
 
 // label specific options -----------------------------------------------------
 /*
@@ -50,7 +59,7 @@ Database Name: width
 Database Class: Width
 Specifies a desired width for the label. If an image or bitmap is being displayed in the label then the value is in screen units (i.e. any of the forms acceptable to Tk_GetPixels); for text it is in characters. If this option is not specified, the label's desired width is computed from the size of the image or bitmap or text being displayed in it.
 */
-func LabelOptionWidth(value int) *intOption {
+func LabelOptWidth(value int) *intOption {
 	return newIntOption("width", value)
 }
 
@@ -60,7 +69,7 @@ Database Name: height
 Database Class: Height
 Specifies a desired height for the label. If an image or bitmap is being displayed in the label then the value is in screen units (i.e. any of the forms acceptable to Tk_GetPixels); for text it is in lines of text. If this option is not specified, the label's desired height is computed from the size of the image or bitmap or text being displayed in it.
 */
-func LabelOptionHeight(value int) *intOption {
+func LabelOptHeight(value int) *intOption {
 	return newIntOption("height", value)
 }
 
@@ -73,13 +82,19 @@ In normal state the button is displayed using the -foreground and -background op
 In active state the label is displayed using the -activeforeground and -activebackground options.
 In the disabled state the -disabledforeground and -background options determine how the button is displayed.
 */
-func LabelOptionState(state string) *stringOption {
+func LabelOptState(state string) *stringOption {
 	return newStringOption("state", state)
 }
 
+const (
+	LabelStateActive   = "active"
+	LabelStateNormal   = "normal"
+	LabelStateDisabled = "disabled"
+)
+
 // fast configure aliases -----------------------------------------------------
 func (l *Label) SetText(value string) {
-	l.Configure(LabelOptionText(value))
+	l.Configure(LabelOptText(value))
 }
 
 // org get-set ----------------------------------------------------------------

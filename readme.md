@@ -72,13 +72,6 @@ func main() {
 ## TODO
 
 - [ ] label
-  - [ ] textvariable
-  - [ ] bitmap
-  - [ ] cursor
-  - [ ] disabledforeground
-  - [ ] -highlightbackground, highlightBackground, HighlightBackground
-  - [ ] -highlightcolor, highlightColor, HighlightColor
-  - [ ] -highlightthickness, highlightThickness, HighlightThickness
 
 ## Devel
 

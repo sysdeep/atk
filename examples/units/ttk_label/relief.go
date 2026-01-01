@@ -10,9 +10,9 @@ func makeReliefFrame(parent tk.Widget) *tk.LabelFrame {
 	for i, s := range borderStyleName {
 		lbl := tk.NewLabel(frame, "Relief: "+s)
 		lbl.Configure(
-			tk.LabelOptionRelief(s),
-			tk.LabelOptionWidth(24),
-			tk.LabelOptionPadY(4),
+			tk.LabelOptRelief(s),
+			tk.LabelOptWidth(24),
+			tk.LabelOptPadY(4),
 		)
 
 		tk.Grid(lbl, tk.GridAttrRow(i), tk.GridAttrColumn(0))

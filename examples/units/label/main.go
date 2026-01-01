@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/sysdeep/atk/tk"
+	"github.com/sysdeep/atk/tk/enum/cursor"
 )
 
 type Window struct {
@@ -19,35 +20,26 @@ func NewWindow() *Window {
 
 	w := tk.RootWindow()
 
-	// labels frame
-	labelsFrame := tk.NewFrame(w)
-	tk.Pack(labelsFrame, tk.PackAttrSide(tk.SideTop), tk.PackAttrExpand(true), tk.PackAttrFillBoth())
-
-	// make labels
-	var labels = []*tk.Label{
-		makeLabel1(labelsFrame),
-		makeLabel2(labelsFrame),
-		makeLabel3(labelsFrame),
-		makeLabelNN(labelsFrame),
-		makeLabelText(labelsFrame),
-		makeLabelWrapped(labelsFrame),
-		makeLabelFont(labelsFrame),
-		makeLabelBorderWidth(labelsFrame),
-		makeLabelUnderline(labelsFrame),
-		makeLabelImage(labelsFrame),
-	}
-
-	// grid labels
-	for i, lbl := range labels {
-		tk.Grid(lbl, tk.GridAttrRow(i), tk.GridAttrColumn(0))
-	}
-
 	framesGrid := tk.NewFrame(w)
 	tk.Pack(framesGrid, tk.PackAttrSide(tk.SideTop), tk.PackAttrExpand(true), tk.PackAttrFillBoth())
 
-	tk.Grid(makeFontsFrame(framesGrid), tk.GridAttrRow(0), tk.GridAttrColumn(0), tk.GridAttrIpadx(4), tk.GridAttrPadx(8))
-	tk.Grid(makeReliefFrame(framesGrid), tk.GridAttrRow(0), tk.GridAttrColumn(1),
-		tk.GridAttrIpadx(8), tk.GridAttrIpady(8), tk.GridAttrPadx(8))
+	frames := [][]*tk.LabelFrame{
+		{
+			makeFontsFrame(framesGrid),
+			makeReliefFrame(framesGrid),
+			makeCursorFrame(framesGrid),
+		},
+		{
+			makeOther(framesGrid),
+			makeColorFrame(framesGrid),
+		},
+	}
+
+	for i, row := range frames {
+		for j, f := range row {
+			tk.Grid(f, tk.GridAttrRow(i), tk.GridAttrColumn(j), tk.GridAttrPady(8), tk.GridAttrPadx(8))
+		}
+	}
 
 	// ---------------------------------------------------
 	// close
@@ -74,21 +66,37 @@ func main() {
 	})
 }
 
-func makeLabel1(parent tk.Widget) *tk.Label {
+func makeOther(parent tk.Widget) *tk.LabelFrame {
+	frame := tk.NewLabelFrame(parent, tk.LabelFrameAttrLabelText("Other"))
+
+	// make labels
+	var labels = []*tk.Label{
+		makeLabelSimple(frame),
+		makeLabelWidth(frame),
+		makeLabelNN(frame),
+		makeLabelText(frame),
+		makeLabelWrapped(frame),
+		makeLabelFont(frame),
+		makeLabelBorderWidth(frame),
+		makeLabelUnderline(frame),
+		makeLabelImage(frame),
+	}
+
+	// grid labels
+	for i, lbl := range labels {
+		tk.Grid(lbl, tk.GridAttrRow(i), tk.GridAttrColumn(0))
+	}
+
+	return frame
+}
+
+func makeLabelSimple(parent tk.Widget) *tk.Label {
 	return tk.NewLabel(parent, "Simple label")
 }
 
 func makeLabelUnderline(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "Simple label with underline")
-	lbl.Configure(tk.LabelOptionUnderline(2))
-	return lbl
-}
-
-func makeLabel2(parent tk.Widget) *tk.Label {
-	lbl := tk.NewLabel(parent, "BG and FG",
-		tk.LabelOptionBackground("green"),
-		tk.LabelOptionForeground("red"),
-	)
+	lbl.Configure(tk.LabelOptUnderline(2))
 	return lbl
 }
 
@@ -96,8 +104,8 @@ func makeLabelImage(parent tk.Widget) *tk.Label {
 	img, _ := tk.LoadImage(tk.TkLibrary() + "/images/pwrdLogo100.gif")
 
 	lbl := tk.NewLabel(parent, "with image",
-		tk.LabelOptionImage(img),
-		tk.LabelOptionCompound("left"),
+		tk.LabelOptImage(img),
+		tk.LabelOptCompound("left"),
 	)
 	return lbl
 }
@@ -105,18 +113,18 @@ func makeLabelImage(parent tk.Widget) *tk.Label {
 func makeLabelFont(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "Font")
 	lbl.Configure(
-		tk.LabelOptionFont("TKHeadingFont"),
+		tk.LabelOptFont("TKHeadingFont"),
 		// tk.LabelOptionForeground("red"),
 	)
 	return lbl
 }
 
-func makeLabel3(parent tk.Widget) *tk.Label {
+func makeLabelWidth(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "Width = 30")
 	lbl.Configure(
-		tk.LabelOptionBackground("green"),
-		tk.LabelOptionWidth(30),
-		tk.LabelOptionForeground("red"),
+		tk.LabelOptBackground("green"),
+		tk.LabelOptWidth(30),
+		tk.LabelOptForeground("red"),
 	)
 	return lbl
 }
@@ -124,10 +132,10 @@ func makeLabel3(parent tk.Widget) *tk.Label {
 func makeLabelBorderWidth(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "BorderWidth 3 and padx pady 10")
 	lbl.Configure(
-		tk.LabelOptionBorderWidth(3),
-		tk.LabelOptionRelief("solid"),
-		tk.LabelOptionPadX(10),
-		tk.LabelOptionPadY(10),
+		tk.LabelOptBorderWidth(3),
+		tk.LabelOptRelief("solid"),
+		tk.LabelOptPadX(10),
+		tk.LabelOptPadY(10),
 	)
 	return lbl
 }
@@ -135,7 +143,7 @@ func makeLabelBorderWidth(parent tk.Widget) *tk.Label {
 func makeLabelWrapped(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "Wrap length 200")
 	lbl.Configure(
-		tk.LabelOptionWrapLength(100),
+		tk.LabelOptWrapLength(100),
 	)
 	return lbl
 }
@@ -143,17 +151,17 @@ func makeLabelWrapped(parent tk.Widget) *tk.Label {
 func makeLabelText(parent tk.Widget) *tk.Label {
 	lbl := tk.NewLabel(parent, "---")
 	lbl.Configure(
-		tk.LabelOptionText("reconfigure text\ndisabled"),
-		tk.LabelOptionJustify("right"),
-		tk.LabelOptionWidth(30),
-		tk.LabelOptionBorderWidth(1),
-		tk.LabelOptionRelief("solid"),
-		tk.LabelOptionPadX(10),
-		tk.LabelOptionPadY(10),
-		tk.LabelOptionAnchor("e"),
+		tk.LabelOptText("reconfigure text\ndisabled"),
+		tk.LabelOptJustify("right"),
+		tk.LabelOptWidth(30),
+		tk.LabelOptBorderWidth(1),
+		tk.LabelOptRelief("solid"),
+		tk.LabelOptPadX(10),
+		tk.LabelOptPadY(10),
+		tk.LabelOptAnchor("e"),
 		// tk.LabelOptionActiveBackground("green"),
-		tk.LabelOptionState("disabled"),
-		tk.LabelOptionHeight(13),
+		tk.LabelOptState("disabled"),
+		tk.LabelOptHeight(13),
 		// tk.LabelOptionBackground("blue"),
 	)
 	return lbl
@@ -166,21 +174,22 @@ func makeLabelNN(parent tk.Widget) *tk.Label {
 	lbl_1.Configure(
 		// tk.LabelOptionBackground("green"),
 		// tk.LabelOptionForeground("red"),
-		tk.LabelOptionWidth(30),
-		tk.OptionReliefEnum(tk.ReliefStyleRidge),
+		tk.LabelOptWidth(30),
+		tk.OptReliefEnum(tk.ReliefStyleRidge),
+		tk.LabelOptCursor(cursor.Bogosity),
 	)
 
 	// test try option throught cget
-	bgq := tk.LabelOptionBackground("")
+	bgq := tk.LabelOptBackground("")
 	fmt.Printf("Bg before: %s\n", bgq.Value)
 	lbl_1.CGet(bgq)
 	fmt.Printf("Bg after: %s\n", bgq.Value)
 
-	www := tk.LabelOptionWidth(0)
+	www := tk.LabelOptWidth(0)
 	lbl_1.CGet(www)
 	fmt.Printf("W after: %d\n", www.Value)
 
-	rw := tk.OptionReliefEnum(0)
+	rw := tk.OptReliefEnum(0)
 	lbl_1.CGet(rw)
 	fmt.Printf("relief: %s\n", rw.Value)
 

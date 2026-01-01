@@ -2,17 +2,33 @@
 
 package tk
 
+/*
+NAME
+ttk::label — Display a text string and/or image
+STANDARD OPTIONS
+-padding, padding, Padding
+-style, style, Style
+-textvariable, textVariable, Variable
+WIDGET-SPECIFIC OPTIONS
+-anchor, anchor, Anchor
+-background, frameColor, FrameColor
+-font, font, Font
+-foreground, textColor, TextColor
+-justify, justify, Justify
+-relief, relief, Relief
+-wraplength, wrapLength, WrapLength
+WIDGET COMMAND
+*/
 // ttk::label
 type TLabel struct {
 	BaseWidget
 }
 
-// TODO: use new options api
 func NewTLabel(parent Widget, text string, options ...OptionAdapter) *TLabel {
 
 	iid := makeNamedWidgetId(parent, "ttk_label")
 
-	options = append(options, TLabelOptionText(text))
+	options = append(options, TLabelOptText(text))
 
 	info := CreateWidgetInfoOptions(iid, "ttk::label", options)
 
@@ -28,8 +44,15 @@ func NewTLabel(parent Widget, text string, options ...OptionAdapter) *TLabel {
 // TODO: move to base widget
 
 // option aliases -------------------------------------------------------------
-var TLabelOptionText = OptionText
-var TLabelOptionUnderline = OptionUnderline
+var TLabelOptText = OptText
+var TLabelOptUnderline = OptUnderline
+var TLabelOptWidth = OptWidth
+var TLabelOptCompound = OptCompound
+var TLabelOptImage = OptImage
+var TLabelOptTakeFocus = OptTakeFocus
+var TLabelOptCursor = OptCursor
+var TLabelOptClass = OptClass
+var TLabelOptState = OptState
 
 // label specific options -----------------------------------------------------
 // TODO
