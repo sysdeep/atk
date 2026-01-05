@@ -73,6 +73,13 @@ func main() {
 
 - [ ] label
 
+- [ ] toplevel
+
+  - [ ] wm iconname $w "label"
+
+- [ ] common
+  - [ ] единицы размеров не только в цифрах но ещё и в i, p, m...
+
 ## Devel
 
 ### Fonts
