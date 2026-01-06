@@ -152,8 +152,7 @@ func CreateWidgetInfoOptions(iid string, command string, options []OptionAdapter
 
 	var list []string
 	for _, opt := range options {
-		optionAsString := opt.asStringPair()
-		list = append(list, fmt.Sprintf("-%v {%v}", optionAsString.Key, optionAsString.Value))
+		list = append(list, opt.String())
 	}
 	opts := strings.Join(list, " ")
 	// if len(options) > 0 {

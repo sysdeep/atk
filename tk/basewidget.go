@@ -235,9 +235,7 @@ func (w *BaseWidget) Configure(options ...OptionAdapter) error {
 	var list []string
 	for _, opt := range options {
 
-		optionAsString := opt.asStringPair()
-
-		list = append(list, fmt.Sprintf("-%v {%v}", optionAsString.Key, optionAsString.Value))
+		list = append(list, opt.String())
 	}
 	opts := strings.Join(list, " ")
 

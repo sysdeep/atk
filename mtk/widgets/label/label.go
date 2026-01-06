@@ -1,48 +1,50 @@
-// https://www.tcl-lang.org/man/tcl8.6/TkCmd/label.htm
+package label
 
-package tk
+import "github.com/sysdeep/atk/tk"
+
+// https://www.tcl-lang.org/man/tcl8.6/TkCmd/label.htm
 
 // tk::label
 type Label struct {
-	BaseWidget
+	tk.BaseWidget
 }
 
 // NewLabel
-func NewLabel(parent Widget, text string, options ...OptionAdapter) *Label {
+func NewLabel(parent tk.Widget, text string, options ...tk.OptionAdapter) *Label {
 
-	iid := makeNamedWidgetId(parent, "tk_label")
+	iid := tk.MakeNamedWidgetId(parent, "tk_label")
 
-	options = append(options, LabelOptText(text))
+	options = append(options, Text(text))
 
-	info := CreateWidgetInfoOptions(iid, "label", options)
+	info := tk.CreateWidgetInfoOptions(iid, "label", options)
 
 	w := &Label{
-		NewBaseWidget(iid, &info),
+		tk.NewBaseWidget(iid, &info),
 	}
 
-	RegisterWidget(w)
+	tk.RegisterWidget(w)
 	return w
 }
 
 // option aliases -------------------------------------------------------------
-var LabelOptBackground = OptBackground
-var LabelOptActiveBackground = OptActiveBackground
-var LabelOptForeground = OptForeground
-var LabelOptActiveForeground = OptActiveForeground
-var LabelOptRelief = OptRelief
-var LabelOptBorderWidth = OptBorderWidth
-var LabelOptPadX = OptPadX
-var LabelOptPadY = OptPadY
-var LabelOptText = OptText
-var LabelOptJustify = OptJustify
-var LabelOptAnchor = OptAnchor
-var LabelOptWrapLength = OptWrapLength
-var LabelOptUnderline = OptUnderline
-var LabelOptFont = OptFont
-var LabelOptCompound = OptCompound
-var LabelOptImage = OptImage
-var LabelOptTakeFocus = OptTakeFocus
-var LabelOptCursor = OptCursor
+var Background = tk.OptBackground
+var ActiveBackground = tk.OptActiveBackground
+var Foreground = tk.OptForeground
+var ActiveForeground = tk.OptActiveForeground
+var Relief = tk.OptRelief
+var BorderWidth = tk.OptBorderWidth
+var PadX = tk.OptPadX
+var PadY = tk.OptPadY
+var Text = tk.OptText
+var Justify = tk.OptJustify
+var Anchor = tk.OptAnchor
+var WrapLength = tk.OptWrapLength
+var Underline = tk.OptUnderline
+var Font = tk.OptFont
+var Compound = tk.OptCompound
+var Image = tk.OptImage
+var TakeFocus = tk.OptTakeFocus
+var Cursor = tk.OptCursor
 
 // TODO
 //   - [ ] textvariable
@@ -59,8 +61,8 @@ Database Name: width
 Database Class: Width
 Specifies a desired width for the label. If an image or bitmap is being displayed in the label then the value is in screen units (i.e. any of the forms acceptable to Tk_GetPixels); for text it is in characters. If this option is not specified, the label's desired width is computed from the size of the image or bitmap or text being displayed in it.
 */
-func LabelOptWidth(value int) *IntOption {
-	return NewIntOption("width", value)
+func LabelOptWidth(value int) *tk.IntOption {
+	return tk.NewIntOption("width", value)
 }
 
 /*
@@ -69,8 +71,8 @@ Database Name: height
 Database Class: Height
 Specifies a desired height for the label. If an image or bitmap is being displayed in the label then the value is in screen units (i.e. any of the forms acceptable to Tk_GetPixels); for text it is in lines of text. If this option is not specified, the label's desired height is computed from the size of the image or bitmap or text being displayed in it.
 */
-func LabelOptHeight(value int) *IntOption {
-	return NewIntOption("height", value)
+func LabelOptHeight(value int) *tk.IntOption {
+	return tk.NewIntOption("height", value)
 }
 
 /*
@@ -82,19 +84,19 @@ In normal state the button is displayed using the -foreground and -background op
 In active state the label is displayed using the -activeforeground and -activebackground options.
 In the disabled state the -disabledforeground and -background options determine how the button is displayed.
 */
-func LabelOptState(state string) *StringOption {
-	return NewStringOption("state", state)
+func LabelOptState(state string) *tk.StringOption {
+	return tk.NewStringOption("state", state)
 }
 
 const (
-	LabelStateActive   = "active"
-	LabelStateNormal   = "normal"
-	LabelStateDisabled = "disabled"
+	StateActive   = "active"
+	StateNormal   = "normal"
+	StateDisabled = "disabled"
 )
 
 // fast configure aliases -----------------------------------------------------
 func (l *Label) SetText(value string) {
-	l.Configure(LabelOptText(value))
+	l.Configure(Text(value))
 }
 
 // org get-set ----------------------------------------------------------------

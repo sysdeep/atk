@@ -2,52 +2,33 @@ package tk
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/sysdeep/atk/tk/enum/state"
 )
 
-// const (
-// 	OptionBackground = "background"
-// )
-
-// type OptBackground struct{}
-
-// func (b *OptBackground) String() string{
-// 	return fmt.
-// }
-
-type OptionStringPair struct {
-	Key   string
-	Value string
-}
-
 type OptionAdapter interface {
-	asStringPair() OptionStringPair
+	String() string
 	asAnyPair(h func(string, interface{}) (interface{}, error)) error
 }
 
 // string ---------------------------------------------------------------------
-type stringOption struct {
+type StringOption struct {
 	Key   string
 	Value string
 }
 
-func newStringOption(key string, value string) *stringOption {
-	return &stringOption{
+func NewStringOption(key string, value string) *StringOption {
+	return &StringOption{
 		Key:   key,
 		Value: value,
 	}
 }
 
-func (s stringOption) asStringPair() OptionStringPair {
-	return OptionStringPair{
-		Key:   s.Key,
-		Value: s.Value,
-	}
+func (s StringOption) String() string {
+	return fmt.Sprintf("-%v {%v}", s.Key, s.Value)
 }
 
-func (s *stringOption) asAnyPair(h func(k string, v interface{}) (interface{}, error)) error {
+func (s *StringOption) asAnyPair(h func(k string, v interface{}) (interface{}, error)) error {
 	raw, err := h(s.Key, s.Value)
 	if err != nil {
 		return err
@@ -62,26 +43,23 @@ func (s *stringOption) asAnyPair(h func(k string, v interface{}) (interface{}, e
 }
 
 // int ---------------------------------------------------------------------
-type intOption struct {
+type IntOption struct {
 	Key   string
 	Value int
 }
 
-func (s intOption) asStringPair() OptionStringPair {
-	return OptionStringPair{
-		Key:   s.Key,
-		Value: strconv.Itoa(s.Value),
-	}
+func (s IntOption) String() string {
+	return fmt.Sprintf("-%v {%d}", s.Key, s.Value)
 }
 
-func newIntOption(key string, value int) *intOption {
-	return &intOption{
+func NewIntOption(key string, value int) *IntOption {
+	return &IntOption{
 		Key:   key,
 		Value: value,
 	}
 }
 
-func (s *intOption) asAnyPair(h func(k string, v interface{}) (interface{}, error)) error {
+func (s *IntOption) asAnyPair(h func(k string, v interface{}) (interface{}, error)) error {
 	raw, err := h(s.Key, s.Value)
 	if err != nil {
 		return err
@@ -146,8 +124,8 @@ Database Name: background
 Database Class: Background
 Specifies the normal background color to use when displaying the widget.
 */
-func OptBackground(color string) *stringOption {
-	return newStringOption("background", color)
+func OptBackground(color string) *StringOption {
+	return NewStringOption("background", color)
 }
 
 /*
@@ -156,8 +134,8 @@ Database Name: activeBackground
 Database Class: Foreground
 Specifies background color to use when drawing active elements. An element (a widget or portion of a widget) is active if the mouse cursor is positioned over the element and pressing a mouse button will cause some action to occur. If strict Motif compliance has been requested by setting the tk_strictMotif variable, this option will normally be ignored; the normal background color will be used instead. For some elements on Windows and Macintosh systems, the active color will only be used while mouse button 1 is pressed over the element.
 */
-func OptActiveBackground(color string) *stringOption {
-	return newStringOption("activebackground", color)
+func OptActiveBackground(color string) *StringOption {
+	return NewStringOption("activebackground", color)
 }
 
 /*
@@ -166,8 +144,8 @@ Database Name: foreground
 Database Class: Foreground
 Specifies the normal foreground color to use when displaying the widget.
 */
-func OptForeground(color string) *stringOption {
-	return newStringOption("foreground", color)
+func OptForeground(color string) *StringOption {
+	return NewStringOption("foreground", color)
 }
 
 /*
@@ -176,8 +154,8 @@ Database Name: activeForeground
 Database Class: Background
 Specifies foreground color to use when drawing active elements. See above for definition of active elements.
 */
-func OptActiveForeground(color string) *stringOption {
-	return newStringOption("activeforeground", color)
+func OptActiveForeground(color string) *StringOption {
+	return NewStringOption("activeforeground", color)
 }
 
 /*
@@ -186,8 +164,8 @@ Database Name: borderWidth
 Database Class: BorderWidth
 Specifies a non-negative value indicating the width of the 3-D border to draw around the outside of the widget (if such a border is being drawn; the -relief option typically determines this). The value may also be used when drawing 3-D effects in the interior of the widget. The value may have any of the forms acceptable to Tk_GetPixels.
 */
-func OptBorderWidth(width int) *intOption {
-	return newIntOption("borderwidth", width)
+func OptBorderWidth(width int) *IntOption {
+	return NewIntOption("borderwidth", width)
 }
 
 /*
@@ -196,8 +174,8 @@ Database Name: width
 Database Class: Width
 If greater than zero, specifies how much space, in character widths, to allocate for the text label. If less than zero, specifies a minimum width. If zero or unspecified, the natural width of the text label is used.
 */
-func OptWidth(width int) *intOption {
-	return newIntOption("width", width)
+func OptWidth(width int) *IntOption {
+	return NewIntOption("width", width)
 }
 
 /*
@@ -206,8 +184,8 @@ Database Name: padX
 Database Class: Pad
 Specifies a non-negative value indicating how much extra space to request for the widget in the X-direction. The value may have any of the forms acceptable to Tk_GetPixels. When computing how large a window it needs, the widget will add this amount to the width it would normally need (as determined by the width of the things displayed in the widget); if the geometry manager can satisfy this request, the widget will end up with extra internal space to the left and/or right of what it displays inside. Most widgets only use this option for padding text: if they are displaying a bitmap or image, then they usually ignore padding options.
 */
-func OptPadX(value int) *intOption {
-	return newIntOption("padx", value)
+func OptPadX(value int) *IntOption {
+	return NewIntOption("padx", value)
 }
 
 /*
@@ -216,13 +194,13 @@ Database Name: padY
 Database Class: Pad
 Specifies a non-negative value indicating how much extra space to request for the widget in the Y-direction. The value may have any of the forms acceptable to Tk_GetPixels. When computing how large a window it needs, the widget will add this amount to the height it would normally need (as determined by the height of the things displayed in the widget); if the geometry manager can satisfy this request, the widget will end up with extra internal space above and/or below what it displays inside. Most widgets only use this option for padding text: if they are displaying a bitmap or image, then they usually ignore padding options.
 */
-func OptPadY(value int) *intOption {
-	return newIntOption("pady", value)
+func OptPadY(value int) *IntOption {
+	return NewIntOption("pady", value)
 }
 
 // TODO: перевести ReliefStyle на строки-константы
-func OptReliefEnum(relief ReliefStyle) *stringOption {
-	return newStringOption("relief", relief.String())
+func OptReliefEnum(relief ReliefStyle) *StringOption {
+	return NewStringOption("relief", relief.String())
 }
 
 /*
@@ -231,8 +209,8 @@ Database Name: relief
 Database Class: Relief
 Specifies the 3-D effect desired for the widget. Acceptable values are raised, sunken, flat, ridge, solid, and groove. The value indicates how the interior of the widget should appear relative to its exterior; for example, raised means the interior of the widget should appear to protrude from the screen, relative to the exterior of the widget.
 */
-func OptRelief(relief string) *stringOption {
-	return newStringOption("relief", relief)
+func OptRelief(relief string) *StringOption {
+	return NewStringOption("relief", relief)
 }
 
 /*
@@ -241,8 +219,8 @@ Database Name: text
 Database Class: Text
 Specifies a string to be displayed inside the widget. The way in which the string is displayed depends on the particular widget and may be determined by other options, such as -anchor or -justify.
 */
-func OptText(value string) *stringOption {
-	return newStringOption("text", value)
+func OptText(value string) *StringOption {
+	return NewStringOption("text", value)
 }
 
 /*
@@ -251,9 +229,9 @@ Database Name: justify
 Database Class: Justify
 When there are multiple lines of text displayed in a widget, this option determines how the lines line up with each other. Must be one of left, center, or right. Left means that the lines' left edges all line up, center means that the lines' centers are aligned, and right means that the lines' right edges line up.
 */
-func OptJustify(value string) *stringOption {
+func OptJustify(value string) *StringOption {
 	// TODO: justify variants
-	return newStringOption("justify", value)
+	return NewStringOption("justify", value)
 }
 
 /*
@@ -262,9 +240,9 @@ Database Name: anchor
 Database Class: Anchor
 Specifies how the information in a widget (e.g. text or a bitmap) is to be displayed in the widget. Must be one of the values n, ne, e, se, s, sw, w, nw, or center. For example, nw means display the information such that its top-left corner is at the top-left corner of the widget.
 */
-func OptAnchor(value string) *stringOption {
+func OptAnchor(value string) *StringOption {
 	// TODO: anchor variants
-	return newStringOption("anchor", value)
+	return NewStringOption("anchor", value)
 }
 
 /*
@@ -273,8 +251,8 @@ Database Name: wrapLength
 Database Class: WrapLength
 For widgets that can perform word-wrapping, this option specifies the maximum line length. Lines that would exceed this length are wrapped onto the next line, so that no line is longer than the specified length. The value may be specified in any of the standard forms for screen distances. If this value is less than or equal to 0 then no wrapping is done: lines will break only at newline characters in the text.
 */
-func OptWrapLength(value int) *intOption {
-	return newIntOption("wraplength", value)
+func OptWrapLength(value int) *IntOption {
+	return NewIntOption("wraplength", value)
 }
 
 /*
@@ -283,9 +261,9 @@ Database Name: font
 Database Class: Font
 Specifies the font to use when drawing text inside the widget. The value may have any of the forms described in the font manual page under FONT DESCRIPTION.
 */
-func OptFont(value string) *stringOption {
+func OptFont(value string) *StringOption {
 	// TODO: anchor variants
-	return newStringOption("font", value)
+	return NewStringOption("font", value)
 }
 
 /*
@@ -294,8 +272,8 @@ Database Name: underline
 Database Class: Underline
 Specifies the integer index of a character to underline in the widget. This option is used by the default bindings to implement keyboard traversal for menu buttons and menu entries. 0 corresponds to the first character of the text displayed in the widget, 1 to the next character, and so on.
 */
-func OptUnderline(value int) *intOption {
-	return newIntOption("underline", value)
+func OptUnderline(value int) *IntOption {
+	return NewIntOption("underline", value)
 }
 
 /*
@@ -309,9 +287,9 @@ For example, the (default) value none specifies that the bitmap or image should 
 be displayed instead of the text, the value left specifies that the bitmap or
 image should be displayed to the left of the text, and the value center specifies that the bitmap or image should be displayed on top of the text.
 */
-func OptCompound(value string) *stringOption {
+func OptCompound(value string) *StringOption {
 	// TODO: variants
-	return newStringOption("compound", value)
+	return NewStringOption("compound", value)
 }
 
 /*
@@ -320,8 +298,8 @@ Database Name: image
 Database Class: Image
 Specifies an image to display in the widget, which must have been created with the image create command. Typically, if the -image option is specified then it overrides other options that specify a bitmap or textual value to display in the widget, though this is controlled by the -compound option; the -image option may be reset to an empty string to re-enable a bitmap or text display.
 */
-func OptImage(image *Image) *stringOption {
-	return newStringOption("image", image.Id())
+func OptImage(image *Image) *StringOption {
+	return NewStringOption("image", image.Id())
 }
 
 /*
@@ -330,9 +308,9 @@ Database Name: takeFocus
 Database Class: TakeFocus
 Determines whether the window accepts the focus during keyboard traversal (e.g., Tab and Shift-Tab). Before setting the focus to a window, the traversal scripts consult the value of the -takefocus option. A value of 0 means that the window should be skipped entirely during keyboard traversal. 1 means that the window should receive the input focus as long as it is viewable (it and all of its ancestors are mapped). An empty value for the option means that the traversal scripts make the decision about whether or not to focus on the window: the current algorithm is to skip the window if it is disabled, if it has no key bindings, or if it is not viewable. If the value has any other form, then the traversal scripts take the value, append the name of the window to it (with a separator space), and evaluate the resulting string as a Tcl script. The script must return 0, 1, or an empty string: a 0 or 1 value specifies whether the window will receive the input focus, and an empty string results in the default decision described above. Note: this interpretation of the option is defined entirely by the Tcl scripts that implement traversal: the widget implementations ignore the option entirely, so you can change its meaning if you redefine the keyboard traversal scripts.
 */
-func OptTakeFocus(value bool) *intOption {
+func OptTakeFocus(value bool) *IntOption {
 	intValue := boolToInt(value)
-	return newIntOption("takefocus", intValue)
+	return NewIntOption("takefocus", intValue)
 }
 
 /*
@@ -343,8 +321,8 @@ Specifies the mouse cursor to be used for the widget. See Tk_GetCursor and curso
 
 see cursor package
 */
-func OptCursor(value string) *stringOption {
-	return newStringOption("cursor", value)
+func OptCursor(value string) *StringOption {
+	return NewStringOption("cursor", value)
 }
 
 /*
@@ -353,8 +331,8 @@ Database Name: undefined
 Database Class: undefined
 Specifies the window class. The class is used when querying the option database for the window's other options, to determine the default bindtags for the window, and to select the widget's default layout and style. This is a read-only option: it may only be specified when the window is created, and may not be changed with the configure widget command.
 */
-func OptClass(value string) *stringOption {
-	return newStringOption("class", value)
+func OptClass(value string) *StringOption {
+	return NewStringOption("class", value)
 }
 
 /*
@@ -365,6 +343,6 @@ May be set to normal or disabled to control the disabled state bit. This is a wr
 
 see state package
 */
-func OptState(value state.State) *stringOption {
-	return newStringOption("state", value.String())
+func OptState(value state.State) *StringOption {
+	return NewStringOption("state", value.String())
 }

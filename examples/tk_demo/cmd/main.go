@@ -1,6 +1,9 @@
 package main
 
-import "github.com/sysdeep/atk/tk"
+import (
+	"github.com/sysdeep/atk/examples/tk_demo/label"
+	"github.com/sysdeep/atk/tk"
+)
 
 func main() {
 	tk.MainLoop(func() {
@@ -47,11 +50,17 @@ func makeFrameLabels(parent tk.Widget) *tk.LabelFrame {
 	frame := tk.NewLabelFrame(parent, tk.LabelFrameAttrLabelText("Labels"))
 
 	b1 := tk.NewButton(frame, "Labels(text and bitmaps)")
-	b1.OnCommand(doLabels1)
+	b1.OnCommand(doLabel)
 	b1.Pack()
 
 	b2 := tk.NewButton(frame, "Labels and UNICODE text")
 	b2.Pack()
 
 	return frame
+}
+
+func doLabel() {
+	MakeToplevel(func(parent tk.Widget) (tk.Widget, string) {
+		return label.NewLabel(parent), label.LabelTitle
+	})
 }

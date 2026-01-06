@@ -29,6 +29,13 @@ type LayoutAttr struct {
 	Value interface{}
 }
 
+func NewLayoutAttr(key string, value interface{}) *LayoutAttr {
+	return &LayoutAttr{
+		Key:   key,
+		Value: value,
+	}
+}
+
 type LayoutItem struct {
 	widget Widget
 	attrs  []*LayoutAttr
