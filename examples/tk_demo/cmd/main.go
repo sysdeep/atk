@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/sysdeep/atk/examples/tk_demo/label"
+	"github.com/sysdeep/atk/examples/tk_demo/unicode"
 	"github.com/sysdeep/atk/tk"
 )
 
@@ -49,11 +50,12 @@ func main() {
 func makeFrameLabels(parent tk.Widget) *tk.LabelFrame {
 	frame := tk.NewLabelFrame(parent, tk.LabelFrameAttrLabelText("Labels"))
 
-	b1 := tk.NewButton(frame, "Labels(text and bitmaps)")
+	b1 := tk.NewButton(frame, label.LabelTitle)
 	b1.OnCommand(doLabel)
 	b1.Pack()
 
-	b2 := tk.NewButton(frame, "Labels and UNICODE text")
+	b2 := tk.NewButton(frame, unicode.UnicodeTitle)
+	b2.OnCommand(doUnicode)
 	b2.Pack()
 
 	return frame
@@ -62,5 +64,11 @@ func makeFrameLabels(parent tk.Widget) *tk.LabelFrame {
 func doLabel() {
 	MakeToplevel(func(parent tk.Widget) (tk.Widget, string) {
 		return label.NewLabel(parent), label.LabelTitle
+	})
+}
+
+func doUnicode() {
+	MakeToplevel(func(parent tk.Widget) (tk.Widget, string) {
+		return unicode.NewUnicode(parent), unicode.UnicodeTitle
 	})
 }
