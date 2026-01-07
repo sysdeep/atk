@@ -74,7 +74,8 @@ func main() {
 }
 
 func makeLabel1(parent tk.Widget) *tk.TLabel {
-	return tk.NewTLabel(parent, "Simple ttk label")
+	// return tk.NewTLabel(parent, "Simple ttk label")
+	return tk.NewTLabel2(parent, tk.NewTLabelOpts().Text("Simple ttk label")...)
 }
 
 func makeLabelUnderline(parent tk.Widget) *tk.Label {

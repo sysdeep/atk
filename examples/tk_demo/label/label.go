@@ -43,6 +43,36 @@ import (
 func NewLabel(parent tk.Widget) *tk.Frame {
 	f := tk.NewFrame(parent)
 
+	// intro
+	intro := `Five labels are displayed below: three textual ones on the left, and an image label and a text label on the right.  Labels are pretty boring because you can't do anything with them.`
+	// TODO: wrap inches
+	tk.NewLabel(f, intro, tk.LabelOptWrapLength(400), tk.LabelOptJustify("left")).Pack(tk.PackAttrSideTop())
+
+	// left
+	l := tk.NewFrame(f)
+	l.Pack(tk.PackAttrSideLeft(), tk.PackAttrExpand(true), tk.PackAttrPadx(10), tk.PackAttrPady(10), tk.PackAttrFillBoth())
+
+	labelPackAttrs := []*tk.LayoutAttr{tk.PackAttrSideTop(), tk.PackAttrExpand(true), tk.PackAttrPady(2), tk.PackAttrAnchor(tk.AnchorWest)}
+	tk.NewLabel(l, "First label").Pack(labelPackAttrs...)
+	tk.NewLabel(l, "Second label, raised", label.Relief("raised")).Pack(labelPackAttrs...)
+	tk.NewLabel(l, "Third label, sunken", label.Relief("sunken")).Pack(labelPackAttrs...)
+
+	// right
+	r := tk.NewFrame(f)
+	r.Pack(tk.PackAttrSideLeft(), tk.PackAttrExpand(true), tk.PackAttrPadx(10), tk.PackAttrPady(10), tk.PackAttrFillBoth())
+
+	// TODO: image
+	tk.NewLabel(l, "", label.BorderWidth(2), label.Relief("sunken")).Pack(tk.PackAttrSideTop())
+	tk.NewLabel(l, "Tcl/Tk Creator").Pack(tk.PackAttrSideTop())
+
+	return f
+}
+
+const LabelTitle = "Label Demonstration"
+
+func NewLabelWithBuilder(parent tk.Widget) *tk.Frame {
+	f := tk.NewFrame(parent)
+
 	intro := `Five labels are displayed below: three textual ones on the left, and an image label and a text label on the right.  Labels are pretty boring because you can't do anything with them.`
 	// TODO: wrap inches
 	// tk.NewLabel(f, intro, tk.LabelOptWrapLength(344), tk.LabelOptJustify("left")).Pack(tk.PackAttrSideTop())
@@ -65,5 +95,3 @@ func NewLabel(parent tk.Widget) *tk.Frame {
 
 	return f
 }
-
-const LabelTitle = "Label Demonstration"

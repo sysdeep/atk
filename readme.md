@@ -7,6 +7,7 @@ Another Golang Tcl/Tk binding GUI ToolKit
 Go docs: https://pkg.go.dev/github.com/visualfc/atk/tk
 
 Original repo - https://github.com/visualfc/atk
+Another tk9 - https://gitlab.com/cznic/tk9.0
 
 ### Install Tcl/Tk
 
@@ -72,14 +73,28 @@ func main() {
 ## TODO
 
 - [ ] label
-
 - [ ] toplevel
 
   - [ ] wm iconname $w "label"
 
+- [ ] options
+  - [ ] сейчас простая экранизация {} - но она не всегда подходит
 - [ ] common
   - [ ] единицы размеров не только в цифрах но ещё и в i, p, m...
   - [ ] pack - принимает несколько элементов
+  - [ ] вызов виджетов сделать более каноничным(см. tk9)
+
+```go
+
+// command id options
+// label $w.left.l1 -text "First label"
+
+// example
+tk.Label(parent, tk.LabelOpts().Text(""))
+tk.TLabel(parent, tk.TLabelOpts().Text(""))
+
+// LabelOpts - ограничитель-построитель опций только для Label
+```
 
 ## Devel
 

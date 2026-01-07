@@ -56,3 +56,31 @@ var TLabelOptState = OptState
 
 // label specific options -----------------------------------------------------
 // TODO
+
+// new test api ---------------------------------------------------------------
+type TLabelOpts []OptionAdapter
+
+func NewTLabelOpts() TLabelOpts {
+	return TLabelOpts{}
+}
+
+func (o TLabelOpts) Text(v string) TLabelOpts {
+	return append(o, TLabelOptText(v))
+}
+
+func (o TLabelOpts) Width(v int) TLabelOpts {
+	return append(o, TLabelOptWidth(v))
+}
+
+func NewTLabel2(parent Widget, options ...OptionAdapter) *TLabel {
+	iid := makeNamedWidgetId(parent, "ttk_label")
+
+	info := CreateWidgetInfoOptions(iid, "ttk::label", options)
+
+	w := &TLabel{
+		NewBaseWidget(iid, &info),
+	}
+
+	RegisterWidget(w)
+	return w
+}
